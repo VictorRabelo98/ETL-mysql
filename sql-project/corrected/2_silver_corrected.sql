@@ -109,13 +109,16 @@ SELECT
                 OR rc.birth_date REGEXP '^[0-9]{2}/[0-9]{2}/[0-9]{4}$'
               THEN 0.20 ELSE 0 END)
     ) AS data_quality_score
-FROM bronze_layer.raw_customers rc
--- Seleciona apenas o registro mais antigo por customer_id (deduplicação correta)
-WHERE rc.created_at = (
-    SELECT MIN(rc2.created_at)
-    FROM bronze_layer.raw_customers rc2
-    WHERE rc2.customer_id = rc.customer_id
-)
+FROM (
+    SELECT 
+        rc.*,
+        ROW_NUMBER() OVER (
+            PARTITION BY rc.customer_id
+            ORDER BY rc.created_at ASC
+        ) AS rn
+    FROM bronze_layer.raw_customers rc
+) rc
+WHERE rc.rn = 1
 AND rc.customer_id IS NOT NULL;
 
 SELECT 'Clientes processados:' AS metrica,
