@@ -72,7 +72,6 @@ ETL-mysql/
 │   ├── ARCHITECTURE.md               ← Arquitetura técnica detalhada
 │   ├── DATA_QUALITY.md               ← Relatório de qualidade de dados
 │   ├── STACK.md                      ← Stack tecnológica
-│   └── CODE_CHANGES.md               ← O que foi corrigido e por quê
 ├── sql-project/
 │   ├── 1.sql                         ← Bronze Layer (dados brutos originais)
 │   ├── 2.sql                         ← Silver Layer (transformações originais)
